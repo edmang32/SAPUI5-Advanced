@@ -1,3 +1,4 @@
+// @ts-nocheck
 sap.ui.define([
     "sap/ui/core/util/MockServer",
     "sap/ui/model/json/JSONModel",
