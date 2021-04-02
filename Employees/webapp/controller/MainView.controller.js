@@ -6,27 +6,45 @@ sap.ui.define([
 ],
 	/**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
+     * @param {typeof sap.ui.model.Filter} Filter
+     * @param {typeof sap.ui.model.FilterOperator} FilterOperator
      */
     function (Controller, Filter, FilterOperator) {
         "use strict";
 
         function onInit() {
-            var oJSONModel = new sap.ui.model.json.JSONModel();
             var oView = this.getView();
-            oJSONModel.loadData("./localService/mockdata/Employees.json", false);
-            oView.setModel(oJSONModel);
+            //var i18nBundle = oView.getModel("i18n").getResourceBundle();
+
+            var oJSONModelEmpl = new sap.ui.model.json.JSONModel();
+            oJSONModelEmpl.loadData("./localService/mockdata/Employees.json", false);
+            oView.setModel(oJSONModelEmpl, "jsonEmployees");
+
+            var oJSONModelCntr = new sap.ui.model.json.JSONModel();
+            oJSONModelCntr.loadData("./localService/mockdata/Countries.json", false);
+            oView.setModel(oJSONModelCntr, "jsonCountries");
+
+            var oJSONModelConfig = new sap.ui.model.json.JSONModel({
+                visibleID: true,
+                visibleName : true,
+                visibleCountry: true,
+                visibleCity: false,
+                visibleBtnShowCity: true,
+                visibleBtnHideCity: false
+            });
+            oView.setModel(oJSONModelConfig, "jsonModelConfig");
         };
 
         function onFilter() {
-            var oJSON = this.getView().getModel().getData();
+            var oJSONCntr = this.getView().getModel("jsonCountries").getData();
 
             var filters = [];
-            if (oJSON.EmployeeId !== ""){
-                filters.push(new Filter("EmployeeID", FilterOperator.EQ, oJSON.EmployeeId ));
+            if (oJSONCntr.EmployeeId !== ""){
+                filters.push(new Filter("EmployeeID", FilterOperator.EQ, oJSONCntr.EmployeeId ));
             }
 
-            if (oJSON.CountryKey !== ""){
-                filters.push(new Filter("Country", FilterOperator.EQ, oJSON.CountryKey ));
+            if (oJSONCntr.CountryKey !== ""){
+                filters.push(new Filter("Country", FilterOperator.EQ, oJSONCntr.CountryKey ));
             }
 
             var oList = this.getView().byId("tableEmployee");
@@ -35,29 +53,41 @@ sap.ui.define([
         };
 
         function onClearFilter() {
-            var oModel = this.getView().getModel();
+            var oModel = this.getView().getModel("jsonCountries");
             oModel.setProperty("/EmployeeId", "")
             oModel.setProperty("/CountryKey", "")
+        };
+
+        function showPostalCode(oEvent) {
+            var itemPressed = oEvent.getSource();
+            var oContext = itemPressed.getBindingContext("jsonEmployees");
+            var objectContext = oContext.getObject();
+
+            sap.m.MessageToast.show(objectContext.PostalCode);
+        };
+
+        function onShowCity(){
+            var oJSONModelConfig = this.getView().getModel("jsonModelConfig")
+            oJSONModelConfig.setProperty("/visibleCity", true);
+            oJSONModelConfig.setProperty("/visibleBtnShowCity", false);
+            oJSONModelConfig.setProperty("/visibleBtnHideCity", true);
+        };
+
+        function onHideCity() {
+            var oJSONModelConfig = this.getView().getModel("jsonModelConfig")
+            oJSONModelConfig.setProperty("/visibleCity", false);
+            oJSONModelConfig.setProperty("/visibleBtnShowCity", true);
+            oJSONModelConfig.setProperty("/visibleBtnHideCity", false);
         }
 
         var Main = Controller.extend("ns.Employees.controller.MainView", {})
-        // Main.prototype.onValidate = function () {
-        //     var inputEmployee = this.byId("inputEmployee");
-        //     var valueEmployee = inputEmployee.getValue();
 
-        //     if (valueEmployee.length === 6) {
-        //         //inputEmployee.setDescription("OK");
-        //         this.getView().byId("labelCountry").setVisible(true);
-        //         this.getView().byId("slCountry").setVisible(true);
-        //     } else {
-        //         //inputEmployee.setDescription("Not OK");
-        //         this.getView().byId("labelCountry").setVisible(false);
-        //         this.getView().byId("slCountry").setVisible(false);
-        //     }
-        // };
         Main.prototype.onInit = onInit;
         Main.prototype.onFilter = onFilter;
         Main.prototype.onClearFilter = onClearFilter;
+        Main.prototype.showPostalCode = showPostalCode;
+        Main.prototype.onShowCity = onShowCity;
+        Main.prototype.onHideCity = onHideCity;
 
         return Main;
     });
