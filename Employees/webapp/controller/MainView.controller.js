@@ -26,7 +26,7 @@ sap.ui.define([
 
             var oJSONModelConfig = new sap.ui.model.json.JSONModel({
                 visibleID: true,
-                visibleName : true,
+                visibleName: true,
                 visibleCountry: true,
                 visibleCity: false,
                 visibleBtnShowCity: true,
@@ -39,12 +39,12 @@ sap.ui.define([
             var oJSONCntr = this.getView().getModel("jsonCountries").getData();
 
             var filters = [];
-            if (oJSONCntr.EmployeeId !== ""){
-                filters.push(new Filter("EmployeeID", FilterOperator.EQ, oJSONCntr.EmployeeId ));
+            if (oJSONCntr.EmployeeId !== "") {
+                filters.push(new Filter("EmployeeID", FilterOperator.EQ, oJSONCntr.EmployeeId));
             }
 
-            if (oJSONCntr.CountryKey !== ""){
-                filters.push(new Filter("Country", FilterOperator.EQ, oJSONCntr.CountryKey ));
+            if (oJSONCntr.CountryKey !== "") {
+                filters.push(new Filter("Country", FilterOperator.EQ, oJSONCntr.CountryKey));
             }
 
             var oList = this.getView().byId("tableEmployee");
@@ -66,7 +66,7 @@ sap.ui.define([
             sap.m.MessageToast.show(objectContext.PostalCode);
         };
 
-        function onShowCity(){
+        function onShowCity() {
             var oJSONModelConfig = this.getView().getModel("jsonModelConfig")
             oJSONModelConfig.setProperty("/visibleCity", true);
             oJSONModelConfig.setProperty("/visibleBtnShowCity", false);
@@ -78,7 +78,92 @@ sap.ui.define([
             oJSONModelConfig.setProperty("/visibleCity", false);
             oJSONModelConfig.setProperty("/visibleBtnShowCity", true);
             oJSONModelConfig.setProperty("/visibleBtnHideCity", false);
-        }
+        };
+
+        function showOrders(oEvent) {
+            var ordrsTable = this.getView().byId("ordrsTable");
+
+            ordrsTable.destroyItems();
+            var itemPressed = oEvent.getSource();
+            var oContext = itemPressed.getBindingContext("jsonEmployees");
+            var objectContext = oContext.getObject();
+            var orders = objectContext.Orders;
+
+            var ordersItems = [];
+            for (var i in orders) {
+                ordersItems.push(new sap.m.ColumnListItem({
+                    cells: [
+                        new sap.m.Label({ text: orders[i].OrderID }),
+                        new sap.m.Label({ text: orders[i].Freight }),
+                        new sap.m.Label({ text: orders[i].ShipAddress })
+                    ]
+                }));
+            }
+
+            var newTable = new sap.m.Table({
+                width: "auto",
+                columns: [
+                    new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>orderID}" }) }),
+                    new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>freight}" }) }),
+                    new sap.m.Column({ header: new sap.m.Label({ text: "{i18n>shipAddress}" }) })
+                ],
+                items: ordersItems
+            }).addStyleClass("sapUiSmallMargin");
+
+            ordrsTable.addItem(newTable);
+
+
+
+            var newTableJSON = new sap.m.Table();
+
+            newTableJSON.setWidth("auto");
+            newTableJSON.addStyleClass("sapUiSmallMargin");
+
+            var columnOrderID = new sap.m.Column();
+            var labelOrderID  = new sap.m.Label();
+            labelOrderID.bindProperty("text", "i18n>orderID");
+            columnOrderID.setHeader(labelOrderID);
+            newTableJSON.addColumn(columnOrderID);
+
+            var columnFreight = new sap.m.Column();
+            var labelFreight  = new sap.m.Label();
+            labelFreight.bindProperty("text", "i18n>freight");
+            columnFreight.setHeader(labelFreight);
+            newTableJSON.addColumn(columnFreight);
+
+            var columnshipAddress  = new sap.m.Column();
+            var labelshipAddress  = new sap.m.Label();
+            labelshipAddress.bindProperty("text", "i18n>shipAddress");
+            columnshipAddress.setHeader(labelshipAddress);
+            newTableJSON.addColumn(columnshipAddress);
+
+            var columnListItem = new sap.m.ColumnListItem();
+
+            var cellOrderID = new sap.m.Label();
+            cellOrderID.bindProperty("text", "jsonEmployees>OrderID");
+            columnListItem.addCell(cellOrderID);
+
+            var cellFreight = new sap.m.Label();
+            cellFreight.bindProperty("text", "jsonEmployees>Freight");
+            columnListItem.addCell(cellFreight);
+
+            var cellshipAddress = new sap.m.Label();
+            cellshipAddress.bindProperty("text", "jsonEmployees>ShipAddress");
+            columnListItem.addCell(cellshipAddress);
+
+            var oBindingInfo = {
+                model: "jsonEmployees",
+                path: "Orders",
+                template: columnListItem };
+
+            newTableJSON.bindAggregation("items", oBindingInfo);
+            newTableJSON.bindElement("jsonEmployees>" + oContext.getPath());
+
+
+            ordrsTable.addItem(newTableJSON);
+
+
+        };
 
         var Main = Controller.extend("ns.Employees.controller.MainView", {})
 
@@ -88,6 +173,7 @@ sap.ui.define([
         Main.prototype.showPostalCode = showPostalCode;
         Main.prototype.onShowCity = onShowCity;
         Main.prototype.onHideCity = onHideCity;
+        Main.prototype.showOrders = showOrders;
 
         return Main;
     });
