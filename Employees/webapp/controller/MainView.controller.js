@@ -80,7 +80,7 @@ sap.ui.define([
             oJSONModelConfig.setProperty("/visibleBtnHideCity", false);
         };
 
-        function showOrders(oEvent) {
+        function showOrdersOriginal(oEvent) {
             var ordrsTable = this.getView().byId("ordrsTable");
 
             ordrsTable.destroyItems();
@@ -120,19 +120,19 @@ sap.ui.define([
             newTableJSON.addStyleClass("sapUiSmallMargin");
 
             var columnOrderID = new sap.m.Column();
-            var labelOrderID  = new sap.m.Label();
+            var labelOrderID = new sap.m.Label();
             labelOrderID.bindProperty("text", "i18n>orderID");
             columnOrderID.setHeader(labelOrderID);
             newTableJSON.addColumn(columnOrderID);
 
             var columnFreight = new sap.m.Column();
-            var labelFreight  = new sap.m.Label();
+            var labelFreight = new sap.m.Label();
             labelFreight.bindProperty("text", "i18n>freight");
             columnFreight.setHeader(labelFreight);
             newTableJSON.addColumn(columnFreight);
 
-            var columnshipAddress  = new sap.m.Column();
-            var labelshipAddress  = new sap.m.Label();
+            var columnshipAddress = new sap.m.Column();
+            var labelshipAddress = new sap.m.Label();
             labelshipAddress.bindProperty("text", "i18n>shipAddress");
             columnshipAddress.setHeader(labelshipAddress);
             newTableJSON.addColumn(columnshipAddress);
@@ -154,7 +154,8 @@ sap.ui.define([
             var oBindingInfo = {
                 model: "jsonEmployees",
                 path: "Orders",
-                template: columnListItem };
+                template: columnListItem
+            };
 
             newTableJSON.bindAggregation("items", oBindingInfo);
             newTableJSON.bindElement("jsonEmployees>" + oContext.getPath());
@@ -162,8 +163,26 @@ sap.ui.define([
 
             ordrsTable.addItem(newTableJSON);
 
-
         };
+
+        function showOrders(oEvent) {
+            //get selected controler
+            var iconPressed = oEvent.getSource();
+
+            // context from Model
+            var oContext = iconPressed.getBindingContext("jsonEmployees");
+            if (!this._oDialogOrders) {
+                this._oDialogOrders = sap.ui.xmlfragment("ns.Employees.fragment.DialogOrders", this);
+                this.getView().addDependent(this._oDialogOrders);
+            };
+            // Dialog Binding to Context to access to selected data item
+            this._oDialogOrders.bindElement("jsonEmployees>" + oContext.getPath());
+            this._oDialogOrders.open();
+        };
+
+        function onCloseOrders() {
+            this._oDialogOrders.close();
+        }
 
         var Main = Controller.extend("ns.Employees.controller.MainView", {})
 
@@ -174,6 +193,7 @@ sap.ui.define([
         Main.prototype.onShowCity = onShowCity;
         Main.prototype.onHideCity = onHideCity;
         Main.prototype.showOrders = showOrders;
+        Main.prototype.onCloseOrders = onCloseOrders;
 
         return Main;
     });
