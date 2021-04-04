@@ -1,14 +1,12 @@
-<mvc:View controllerName="ns.Employees.controller.MainView" 
+<mvc:View controllerName="ns.Employees.controller.MasterEmployee" 
             xmlns:mvc="sap.ui.core.mvc" 
             displayBlock="true" 
             xmlns="sap.m"
             xmlns:core="sap.ui.core">
-	<Shell id="shell">
-		<App id="app">
-			<pages>
+
 				<Page id="page" title="{i18n>title}">
 					<content>
-                        <HBox >
+                        <HBox wrap="Wrap">
                             <Label  id="labelEmployee"  labelFor="inputEmployee" text="{i18n>labelEmployee}" 
                                     class="sapUiSmallMargin"></Label>
                             <Input  id="inputEmployee"  value="{jsonCountries>/EmployeeId}" 
@@ -26,13 +24,11 @@
                                     <core:Item key="{jsonCountries>Key}" text="{jsonCountries>Text}"/>
                                 </items>
                             </Select>
-                            <Button id="btnFilter" text="{i18n>btnFilter}" icon="sap-icon://search" press="onFilter" class="sapUiSmallMarginBeginEnd"/>
+                            <Button id="btnFilter" text="{i18n>btnFilter}" icon="sap-icon://search" press="onFilter" class="sapUiSmallMarginEnd"/>
                             <Button id="btnClearFilter" text="{i18n>btnClearFilter}" icon="sap-icon://clear-filter" press="onClearFilter" class="sapUiSmallMarginEnd"/>
                         </HBox>
                         <core:Fragment fragmentName = "ns.Employees.fragment.TableEmployee" type="XML"/>
                     </content>
 				</Page>
-			</pages>
-		</App>
-	</Shell>
+			
 </mvc:View>

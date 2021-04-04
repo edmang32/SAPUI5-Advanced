@@ -13,26 +13,7 @@ sap.ui.define([
         "use strict";
 
         function onInit() {
-            var oView = this.getView();
-            //var i18nBundle = oView.getModel("i18n").getResourceBundle();
-
-            var oJSONModelEmpl = new sap.ui.model.json.JSONModel();
-            oJSONModelEmpl.loadData("./localService/mockdata/Employees.json", false);
-            oView.setModel(oJSONModelEmpl, "jsonEmployees");
-
-            var oJSONModelCntr = new sap.ui.model.json.JSONModel();
-            oJSONModelCntr.loadData("./localService/mockdata/Countries.json", false);
-            oView.setModel(oJSONModelCntr, "jsonCountries");
-
-            var oJSONModelConfig = new sap.ui.model.json.JSONModel({
-                visibleID: true,
-                visibleName: true,
-                visibleCountry: true,
-                visibleCity: false,
-                visibleBtnShowCity: true,
-                visibleBtnHideCity: false
-            });
-            oView.setModel(oJSONModelConfig, "jsonModelConfig");
+            this._bus = sap.ui.getCore().getEventBus();
         };
 
         function onFilter() {
@@ -182,6 +163,11 @@ sap.ui.define([
 
         function onCloseOrders() {
             this._oDialogOrders.close();
+        };
+
+        function showEmployee(oEvent) {
+            var  path = oEvent.getSource().getBindingContext("jsonEmployees").getPath();
+            this._bus.publish("flexible", "showEmployee", path);
         }
 
         var Main = Controller.extend("ns.Employees.controller.MainView", {})
@@ -194,6 +180,7 @@ sap.ui.define([
         Main.prototype.onHideCity = onHideCity;
         Main.prototype.showOrders = showOrders;
         Main.prototype.onCloseOrders = onCloseOrders;
+        Main.prototype.showEmployee  = showEmployee;
 
         return Main;
     });
