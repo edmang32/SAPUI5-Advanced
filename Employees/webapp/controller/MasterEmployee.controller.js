@@ -2,14 +2,16 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
+    "sap/ui/model/FilterOperator",
+    "../formaters/EmplyFormaterType"
+
 ],
 	/**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      * @param {typeof sap.ui.model.Filter} Filter
      * @param {typeof sap.ui.model.FilterOperator} FilterOperator
      */
-    function (Controller, Filter, FilterOperator) {
+    function (Controller, Filter, FilterOperator, EmplyFormaterType) {
         "use strict";
 
         function onInit() {
@@ -151,13 +153,13 @@ sap.ui.define([
             var iconPressed = oEvent.getSource();
 
             // context from Model
-            var oContext = iconPressed.getBindingContext("jsonEmployees");
+            var oContext = iconPressed.getBindingContext("odataNorthwind");
             if (!this._oDialogOrders) {
                 this._oDialogOrders = sap.ui.xmlfragment("ns.Employees.fragment.DialogOrders", this);
                 this.getView().addDependent(this._oDialogOrders);
             };
             // Dialog Binding to Context to access to selected data item
-            this._oDialogOrders.bindElement("jsonEmployees>" + oContext.getPath());
+            this._oDialogOrders.bindElement("odataNorthwind>" + oContext.getPath());
             this._oDialogOrders.open();
         };
 
@@ -166,11 +168,13 @@ sap.ui.define([
         };
 
         function showEmployee(oEvent) {
-            var  path = oEvent.getSource().getBindingContext("jsonEmployees").getPath();
+            var  path = oEvent.getSource().getBindingContext("odataNorthwind").getPath();
             this._bus.publish("flexible", "showEmployee", path);
         }
 
-        var Main = Controller.extend("ns.Employees.controller.MainView", {})
+        var Main = Controller.extend("ns.Employees.controller.MainView", {
+            formatterTypeEmply: EmplyFormaterType
+        })
 
         Main.prototype.onInit = onInit;
         Main.prototype.onFilter = onFilter;
