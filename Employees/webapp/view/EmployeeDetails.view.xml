@@ -66,5 +66,10 @@
             <Panel id="tableIncidence" class="sapUiContentPadding" backgroundDesign="Transparent">
             </Panel>
         </Panel >
+
+        <Panel class = "sapUiSizeCompact" backgroundDesign="Transparent" headerText="{i18n>orders}">
+            <core:Fragment fragmentName="ns.Employees.fragment.TableOrders" type="XML" />
+        </Panel >
+
     </Page>
 </mvc:View>
