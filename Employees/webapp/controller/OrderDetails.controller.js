@@ -15,8 +15,6 @@ function(Controller, History) {
             path: "/Orders(" + oEvent.getParameter("arguments").OrderId + ")", 
             model: "odataNorthwind"
         });
-    
-    
     }
 
     return Controller.extend("ns.Employees.controller.OrderDetails",{
@@ -35,7 +33,11 @@ function(Controller, History) {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("RouteMain", true);
             }
+        },
 
+        onClearSignature: function (oEvent) {
+            var signature = this.byId("signature");
+            signature.clear();
         }
     });
 });

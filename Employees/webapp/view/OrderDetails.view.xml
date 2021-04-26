@@ -4,7 +4,8 @@
             xmlns="sap.m"
             xmlns:core="sap.ui.core"
             xmlns:l="sap.ui.layout"
-            xmlns:f="sap.ui.layout.form">
+            xmlns:f="sap.ui.layout.form"
+            xmlns:sc="ns.Employees.control">
     <Page >
         <customHeader>
             <Bar >
@@ -52,6 +53,12 @@
                             </f:FormContainer>
                         </f:formContainers>
                     </f:Form>
+                    <FlexBox class="sapUiTinyMarginTop">
+                        <sc:Signature id="signature"></sc:Signature>
+                        <Button text="{i18n>clearSignature}" 
+                                press="onClearSignature" 
+                                class="sapUiTinyMarginBegin"></Button>
+                    </FlexBox>
                 </l:Grid>
             </Panel>
         </content>

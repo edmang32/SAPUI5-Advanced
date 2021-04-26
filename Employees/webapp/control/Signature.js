@@ -4,7 +4,7 @@ sap.ui.define([
 ], function (Control) {
     'use strict';
 
-    return Control.extend("ns.Employees.controller.Signature", {
+    return Control.extend("ns.Employees.control.Signature", {
 
         metadata: {
             properties: {
@@ -27,29 +27,31 @@ sap.ui.define([
 
         },
 
-        render: function (oRM, oControl) {
+        renderer: function (oRM, oControl) {
             oRM.write("<div");
             oRM.addStyle("width", oControl.getProperty("width"));
             oRM.addStyle("height", oControl.getProperty("height"));
             oRM.addStyle("background-color", oControl.getProperty("bgcolor"));
             oRM.addStyle("border", "1px solid black");
-            oRM.writeStyle ();
+            oRM.writeStyles();
             oRM.write(">");
-            oRM.write("<canvas width='" + oControl.getProperty("width") + "' " + "height='" + oControl.getProperty("height") + "'");
+            oRM.write("<canvas width='" + oControl.getProperty("width") + "' " + "height='"
+                + oControl.getProperty("height") + "'");
             oRM.write("></canvas>");
             oRM.write("</div>");
         },
 
-        ofAfterRendering: function () {
+        onAfterRendering: function () {
             var canvas = document.querySelector("canvas");
-            try{
-            this.signaturePad = new SignaturePad(canvas);
-            }catch{
+            try {
+                this.signaturePad = new SignaturePad(canvas);
+            } catch (e) {
                 console.error(e);
-            },
+            }
+        },
+
         clear: function () {
             this.signaturePad.clear();
-        }
         }
     });
 });
