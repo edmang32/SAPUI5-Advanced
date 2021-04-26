@@ -121,7 +121,15 @@ sap.ui.define([
 
             contextObj.TypeX = true;
             context.getModel().refresh();
-        }
+        };
+
+        function toOrderDetails(oEvent) {
+            var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("RouteOrderDetails", {
+                OrderId : orderID
+            });
+        };
 
         var EmployeeDetails = Controller.extend("ns.Employees.controller.EmployeeDetails", {});
 
@@ -130,10 +138,10 @@ sap.ui.define([
         EmployeeDetails.prototype.Formatter = formatter;
         EmployeeDetails.prototype.onDeleteIncidence = onDeleteIncidence;
         EmployeeDetails.prototype.onSaveIncidence = onSaveIncidence;
-
         EmployeeDetails.prototype.updateIncidenceCreationDate = updateIncidenceCreationDate;
         EmployeeDetails.prototype.updateIncidenceReason = updateIncidenceReason;
         EmployeeDetails.prototype.updateIncidenceType = updateIncidenceType;
+        EmployeeDetails.prototype.toOrderDetails = toOrderDetails;
 
         return EmployeeDetails;
     });

@@ -4,7 +4,7 @@
             <Toolbar>
                 <core:Icon src="{= ${incidenceModel>Type}==='0' ? 'sap-icon://accept'  : 
                                    ${incidenceModel>Type}==='1' ? 'sap-icon://alert'   : 
-                                   ${incidenceModel>Type}==='2' ? 'sap-icon://decline' : '' }"/>
+                                   ${incidenceModel>Type}==='2' ? 'sap-icon://decline' : 'sap-icon://incident' }" />
                 <Title text="{i18n>incidence} 
                             {= ${incidenceModel>IncidenceId} ? parseInt(${incidenceModel>IncidenceId}) : ''} 
                             {path : 'incidenceModel>CreationDate', formatter:'.Formatter.dateFormat'} " ></Title>

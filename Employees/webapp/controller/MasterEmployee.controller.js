@@ -170,7 +170,15 @@ sap.ui.define([
         function showEmployee(oEvent) {
             var  path = oEvent.getSource().getBindingContext("odataNorthwind").getPath();
             this._bus.publish("flexible", "showEmployee", path);
-        }
+        };
+
+         function toOrderDetails(oEvent) {
+             var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
+             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+             oRouter.navTo("RouteOrderDetails", {
+                 OrderId: orderID
+             });
+         };
 
         var Main = Controller.extend("ns.Employees.controller.MainView", {
             formatterTypeEmply: EmplyFormaterType
@@ -185,6 +193,6 @@ sap.ui.define([
         Main.prototype.showOrders = showOrders;
         Main.prototype.onCloseOrders = onCloseOrders;
         Main.prototype.showEmployee  = showEmployee;
-
+        Main.prototype.toOrderDetails = toOrderDetails;
         return Main;
     });

@@ -4,34 +4,28 @@
             xmlns="sap.m"
             xmlns:core="sap.ui.core"
             xmlns:f="sap.f">
-	<Shell id="shell">
-		<App id="app">
-			<pages>
-                <Page showHeader="false">
-                    <content>
-                        <f:FlexibleColumnLayout id="fcl" backgroundDesign="Solid" layout="{jsonLayouts>/ActiveKey}">
-                            <f:beginColumnPages>
-                                <mvc:XMLView id="masterEmployee" viewName="ns.Employees.view.MasterEmployee"></mvc:XMLView>
-                            </f:beginColumnPages>
-                            <f:midColumnPages>
-                                <mvc:XMLView id="employeeDetails" viewName="ns.Employees.view.EmployeeDetails"></mvc:XMLView>
-                            </f:midColumnPages>
-                            <f:endColumnPages>
-                                <Page > 
-                                </Page>
-                            </f:endColumnPages>
-                        </f:FlexibleColumnLayout>
-                    </content>
-                    <footer>
-                        <Toolbar>
-                            <Label text="{i18n>layout}" class="sapUiSmallMargin"> </Label>
-                            <Select items="{jsonLayouts>/Layout}" selectedKey="{jsonLayouts>/ActiveKey}">
-                                <core:Item key="{jsonLayouts>Key}" text="{jsonLayouts>Text}"></core:Item>
-                            </Select>
-                        </Toolbar>
-                    </footer>
-                </Page>
-            </pages>
-		</App>
-	</Shell>
+    <Page showHeader="false">
+        <content>
+            <f:FlexibleColumnLayout id="fcl" backgroundDesign="Solid" layout="{jsonLayouts>/ActiveKey}">
+                <f:beginColumnPages>
+                    <mvc:XMLView id="masterEmployee" viewName="ns.Employees.view.MasterEmployee"></mvc:XMLView>
+                </f:beginColumnPages>
+                <f:midColumnPages>
+                    <mvc:XMLView id="employeeDetails" viewName="ns.Employees.view.EmployeeDetails"></mvc:XMLView>
+                </f:midColumnPages>
+                <f:endColumnPages>
+                    <Page > 
+                    </Page>
+                </f:endColumnPages>
+            </f:FlexibleColumnLayout>
+        </content>
+        <footer>
+            <Toolbar>
+                <Label text="{i18n>layout}" class="sapUiSmallMargin"> </Label>
+                <Select items="{jsonLayouts>/Layout}" selectedKey="{jsonLayouts>/ActiveKey}">
+                    <core:Item key="{jsonLayouts>Key}" text="{jsonLayouts>Text}"></core:Item>
+                </Select>
+            </Toolbar>
+        </footer>
+    </Page>
 </mvc:View>
