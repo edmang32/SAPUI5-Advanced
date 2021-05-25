@@ -1,3 +1,4 @@
 {
-    "editor.autoSave": "off"
+    "editor.autoSave": "off",
+    "actions": []
 }

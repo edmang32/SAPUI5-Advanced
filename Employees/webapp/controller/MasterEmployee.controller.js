@@ -1,17 +1,17 @@
 // @ts-nocheck
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    // "sap/ui/core/mvc/Controller",
+    "ns/Employees/controller/Base.controller",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "../formaters/EmplyFormaterType"
+    "sap/ui/model/FilterOperator"
+    //"../formaters/EmplyFormaterType"
 
 ],
 	/**
-     * @param {typeof sap.ui.core.mvc.Controller} Controller
      * @param {typeof sap.ui.model.Filter} Filter
      * @param {typeof sap.ui.model.FilterOperator} FilterOperator
      */
-    function (Controller, Filter, FilterOperator, EmplyFormaterType) {
+    function (Base, Filter, FilterOperator, EmplyFormaterType) {
         "use strict";
 
         function onInit() {
@@ -172,15 +172,15 @@ sap.ui.define([
             this._bus.publish("flexible", "showEmployee", path);
         };
 
-         function toOrderDetails(oEvent) {
-             var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
-             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-             oRouter.navTo("RouteOrderDetails", {
-                 OrderId: orderID
-             });
-         };
+        //  function toOrderDetails(oEvent) {
+        //      var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
+        //      var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        //      oRouter.navTo("RouteOrderDetails", {
+        //          OrderId: orderID
+        //      });
+        //  };
 
-        var Main = Controller.extend("ns.Employees.controller.MainView", {
+        var Main = Base.extend("ns.Employees.controller.MainView", {
             formatterTypeEmply: EmplyFormaterType
         })
 
@@ -193,6 +193,6 @@ sap.ui.define([
         Main.prototype.showOrders = showOrders;
         Main.prototype.onCloseOrders = onCloseOrders;
         Main.prototype.showEmployee  = showEmployee;
-        Main.prototype.toOrderDetails = toOrderDetails;
+        //Main.prototype.toOrderDetails = toOrderDetails;
         return Main;
     });

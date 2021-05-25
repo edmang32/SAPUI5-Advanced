@@ -1,17 +1,17 @@
 // @ts-nocheck
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    //"sap/ui/core/mvc/Controller",
+    "ns/Employees/controller/Base.controller",
     "ns/Employees/formaters/formatter",
     "sap/m/MessageBox"
 ],
     /**
      * 
-     * @param {typeof sap.ui.core.mvc.Controller} Controller 
      * @param {typeof ns.Employees.formaters.formatter} formatter 
      * @param {typeof sap.m.MessageBox} MessageBox 
      */
 
-    function (Controller, formatter, MessageBox) {
+    function (Base, formatter, MessageBox) {
         'use strict';
 
         function onInit() {
@@ -123,15 +123,15 @@ sap.ui.define([
             context.getModel().refresh();
         };
 
-        function toOrderDetails(oEvent) {
-            var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("RouteOrderDetails", {
-                OrderId : orderID
-            });
-        };
+        // function toOrderDetails(oEvent) {
+        //     var orderID = oEvent.getSource().getBindingContext("odataNorthwind").getObject().OrderID;
+        //     var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+        //     oRouter.navTo("RouteOrderDetails", {
+        //         OrderId : orderID
+        //     });
+        // };
 
-        var EmployeeDetails = Controller.extend("ns.Employees.controller.EmployeeDetails", {});
+        var EmployeeDetails = Base.extend("ns.Employees.controller.EmployeeDetails", {});
 
         EmployeeDetails.prototype.onInit = onInit;
         EmployeeDetails.prototype.onCreateIncidence = onCreateIncidence;
@@ -141,7 +141,7 @@ sap.ui.define([
         EmployeeDetails.prototype.updateIncidenceCreationDate = updateIncidenceCreationDate;
         EmployeeDetails.prototype.updateIncidenceReason = updateIncidenceReason;
         EmployeeDetails.prototype.updateIncidenceType = updateIncidenceType;
-        EmployeeDetails.prototype.toOrderDetails = toOrderDetails;
+        //EmployeeDetails.prototype.toOrderDetails = toOrderDetails;
 
         return EmployeeDetails;
     });
